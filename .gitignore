@@ -1,0 +1,10 @@
+
+.terraform/plugins/windows_amd64/lock.json
+.terraform/plugins/windows_amd64/terraform-provider-azurerm_v2.14.0_x5.exe
+.terraform/plugins/windows_amd64/terraform-provider-random_v2.2.1_x4.exe
+.terraform/terraform.tfstate
+allantest.auto.tfvars
+secrets/rsa.pub
+secrets/ubuntu_ssh
+secrets/ubuntu_ssh.ppk
+secrets/ubuntu_ssh.pub
