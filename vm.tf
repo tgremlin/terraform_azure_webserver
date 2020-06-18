@@ -1,12 +1,3 @@
-# resource "tls_private_key" "ssh" {
-#   algorithm = "RSA"
-#   rsa_bits = 4096
-# }
-
-# output "tls_private_key" {
-#     value = tls_private_key.ssh.private_key_pem
-# }
-
 resource "azurerm_linux_virtual_machine" "vm" {
   name = var.vm_name
   location = azurerm_resource_group.rg.location
@@ -33,11 +24,25 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   admin_ssh_key {
     username = var.vm_admin
-    public_key = file("./secrets/ubuntu_ssh.pub")
+    public_key = file("./secrets/ubuntu_rsa.pub")
   }
 
   boot_diagnostics {
     storage_account_uri = azurerm_storage_account.storage_account.primary_blob_endpoint
+  }
+
+  provisioner "remote-exec" {
+    inline = ["sudo apt-get -qq install python software-properties-common -y",
+    "sudo add-apt-repository ppa:deadsnakes/ppa -y",
+    "sudo apt update",
+    "sudo apt install python3.8 -y",]
+
+      connection {
+        type = "ssh"
+        host = self.public_ip_address
+        private_key = file("./secrets/ubuntu_rsa")
+        user = var.vm_admin
+  }
   }
 
   tags = {
@@ -45,9 +50,9 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
 }
 
-# resource "azurerm_virtual_machine_extension" "install_webserver" {
-#   name  = "hostname"
-#   virtual_machine_id    = azurerm_linux_virtual_machine.vm.id
-#   publisher = "Microsoft.Azure.Extensions"
-#   type  = "CustomScript"
-# }
+resource "null_resource" "run_ansible" {
+  provisioner "local-exec" {
+    command = "sudo ansible-playbook --private-key ./secrets/ubuntu_rsa -i ${var.vm_admin}@${azurerm_linux_virtual_machine.vm.public_ip_address}, playbook.yml"
+  }
+}
+

@@ -19,6 +19,6 @@ resource "azurerm_resource_group" "rg" {
 }
 
 output "pub_ip" {
-    value = azurerm_public_ip.pub_ip.ip_address
+    value = azurerm_linux_virtual_machine.vm.public_ip_address
 }
 
