@@ -51,8 +51,13 @@ resource "azurerm_linux_virtual_machine" "vm" {
 }
 
 resource "null_resource" "run_ansible" {
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
   provisioner "local-exec" {
-    command = "sudo ansible-playbook --private-key ./secrets/ubuntu_rsa -i ${var.vm_admin}@${azurerm_linux_virtual_machine.vm.public_ip_address}, playbook.yml"
+    command = "ansible-playbook --private-key ./secrets/ubuntu_rsa -i ${var.vm_admin}@${azurerm_linux_virtual_machine.vm.public_ip_address}, playbook.yml"
   }
 }
 

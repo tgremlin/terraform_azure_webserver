@@ -1,8 +1,8 @@
-terraform {
-    backend "remote" {
-        organization = "tgremlin"
-        workspaces {
-            name = "terraform_azure_webserver"
-        }
-    }
-}
+#terraform {
+#    backend "remote" {
+#        organization = "tgremlin"
+#        workspaces {
+#            name = "terraform_azure_webserver"
+#        }
+#    }
+#}

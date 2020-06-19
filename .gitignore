@@ -8,3 +8,8 @@ secrets/rsa.pub
 secrets/ubuntu_ssh
 secrets/ubuntu_ssh.ppk
 secrets/ubuntu_ssh.pub
+terraform.tfstate
+terraform.tfstate.backup
+secrets/
+.terraform
+.terraform.tfstate.lock.info
